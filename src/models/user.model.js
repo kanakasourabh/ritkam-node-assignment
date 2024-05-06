@@ -16,7 +16,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    select: false,
   },
   isAdmin: {
     type: Boolean,
@@ -31,8 +30,8 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.comparePassword = async function (password) {
-  return bcrypt.compare(password, this.password);
+userSchema.methods.isPasswordCorrect = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
@@ -43,7 +42,7 @@ userSchema.methods.generateAccessToken = function () {
     },
     process.env.JWT_SECRET_KEY,
     {
-      expiresIn: JWT.EXP,
+      expiresIn: process.env.JWT_EXP,
     }
   );
 };

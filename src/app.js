@@ -15,4 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+//import auth rutes
+import authRouter from "./routes/auth.router.js";
+
+//declaring routes
+app.use("/api/v1/users", authRouter);
+
 export { app };
