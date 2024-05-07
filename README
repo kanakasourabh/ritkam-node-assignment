@@ -1,0 +1,6 @@
+#Features
+
+- User Management: Admins can create and edit users. Normal users can register and authenticate.
+- Authentication: APIs for user login and logout.
+- Group Management: Users can create, delete, search, and add members to groups. All users are visible to each other.
+- Group Messaging: Users can send messages in groups and like messages

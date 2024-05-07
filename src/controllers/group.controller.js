@@ -6,34 +6,29 @@ import { AsyncHandler } from "../utils/AsyncHandler.js";
 
 const createGroupController = AsyncHandler(async (req, res) => {
   try {
-    // Extract user ID of the creator from the request object
     const creatorId = req.user.id;
-    const { name, description } = req.body;
+    const { name, description, members } = req.body;
     if (!name || !description) {
       throw new ApiError(400, "Group name and description required");
     }
 
-    // Create a new group instance using the data from the request body
     const newGroup = await Group.create({
-      name: req.body.name,
-      description: req.body.description,
-      members: req.body.members,
+      name,
+      description,
+      members: members ? [...members, creatorId] : [creatorId],
       createdBy: creatorId,
     });
 
-    // Save the new group to the database
     if (!newGroup) {
       throw new ApiError(400, "Error creating Group");
     }
 
-    // Check if the creator user is not already an admin
     const creatorUser = await User.findById(creatorId);
     if (creatorUser && !creatorUser.isAdmin) {
       creatorUser.isAdmin = true;
       await creatorUser.save();
     }
 
-    // Send a 201 response with the newly created group object
     res.status(201).json(new ApiResponse(201, { newGroup }));
   } catch (err) {
     console.error("Error creating group:", err);
@@ -58,6 +53,11 @@ const getGroupController = AsyncHandler(async (req, res) => {
 
 const deleteGroupController = AsyncHandler(async (req, res) => {
   try {
+    const userId = req.user._id;
+    const groupCreator = Group.findOne({ createdBy: userId });
+    if (!groupCreator) {
+      throw new ApiError(500, "Only creator or admin can delete the group");
+    }
     await Group.findByIdAndDelete(req.params.id);
 
     res.status(200).json({ msg: "Group deleted successfully" });
@@ -69,8 +69,6 @@ const deleteGroupController = AsyncHandler(async (req, res) => {
 
 const addMemberController = AsyncHandler(async (req, res) => {
   try {
-    const { userId } = req.body;
-    console.log(userId, req.params.id);
     const group = await Group.findById(req.params.id);
 
     if (!group) {
@@ -111,6 +109,3 @@ export {
   addMemberController,
   searchGroupsController,
 };
-
-
-

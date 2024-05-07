@@ -12,14 +12,20 @@ const groupSchema = Schema({
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", 
+      ref: "User",
     },
   ],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
+    ref: "User",
     required: true,
   },
+  messages: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Message",
+    },
+  ],
 });
 
 export const Group = model("Group", groupSchema);

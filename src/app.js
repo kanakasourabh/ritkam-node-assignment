@@ -19,10 +19,12 @@ app.use(cookieParser());
 import authRouter from "./routes/auth.router.js";
 import adminRouter from "./routes/admin.router.js";
 import groupRouter from "./routes/group.router.js";
+import messageRouter from "./routes/message.router.js";
 
 //declaring routes
 app.use("/api/v1/users", authRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/groups", groupRouter);
+app.use("/api/v1/messages", messageRouter);
 
 export { app };

@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
-import jwt from "jsonwebtoken";
 
 const generateToken = async (userId) => {
   try {
@@ -65,7 +64,7 @@ const registerController = AsyncHandler(async (req, res) => {
 
 const loginController = AsyncHandler(async (req, res) => {
   try {
-    // Extract user data from request body
+
     const { email, password } = req.body;
     // Check if user exists
     let user = await User.findOne({ email });
@@ -74,7 +73,6 @@ const loginController = AsyncHandler(async (req, res) => {
     }
 
     // Check if password is correct
-
     const isMatch = await user.isPasswordCorrect(password);
 
     if (!isMatch) {
