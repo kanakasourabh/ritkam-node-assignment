@@ -8,10 +8,10 @@ import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-// Create a new user (accessible only to admin)
+// Create a new user
 router.route("/create-users").put(verifyJWT, verifyAdmin, createUserController);
 
-// Update user details (accessible only to admin)
+// Update user details
 router.route("/edit-users/:id").put(verifyJWT, verifyAdmin, editUserController);
 
 export default router;

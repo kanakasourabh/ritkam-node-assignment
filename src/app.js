@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-//import auth rutes
+//importing rotes
 import authRouter from "./routes/auth.router.js";
 import adminRouter from "./routes/admin.router.js";
 import groupRouter from "./routes/group.router.js";

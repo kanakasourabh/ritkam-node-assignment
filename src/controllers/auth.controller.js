@@ -30,7 +30,6 @@ const registerController = AsyncHandler(async (req, res) => {
       throw new ApiError(400, { error: errors?.array() });
     }
 
-    // Extract user data from request body
     const { username, email, password } = req.body;
 
     // Check if user already exists
